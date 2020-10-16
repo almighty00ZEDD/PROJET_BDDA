@@ -1,0 +1,30 @@
+package miniSGBD;
+
+public final class DBInfo {
+	//unique instance
+		private static DBInfo INSTANCE;
+		
+		//Constructeur
+		private  DBManager(){
+			
+		}
+		
+		//accès à l'instance unique du DBManager
+		public static DBManager getInstance() {
+			if(INSTANCE == null) {
+				INSTANCE = new DBInfo();
+			}
+			
+			return INSTANCE;
+		}
+		
+		//Initialisation
+		public void Init() {
+			
+		}
+		
+		//Fin de tache
+		public void Finish() {
+			
+		}
+}

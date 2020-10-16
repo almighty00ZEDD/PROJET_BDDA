@@ -1,0 +1,6 @@
+package miniSGBD;
+
+public class RelationInfo {
+
+	private String nom_relation;
+}

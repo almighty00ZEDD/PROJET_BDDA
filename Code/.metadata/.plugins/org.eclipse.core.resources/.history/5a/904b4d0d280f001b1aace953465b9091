@@ -1,0 +1,11 @@
+package miniSGBD;
+import java.util.Scanner;
+
+public class Main {
+
+	public static void main(String[] args) {
+		DBManager DB = DBManager.getInstance();
+		StringBuffer sb = new StringBuffer();
+	}
+
+}

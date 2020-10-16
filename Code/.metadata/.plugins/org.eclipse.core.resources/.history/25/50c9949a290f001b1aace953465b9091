@@ -1,0 +1,46 @@
+package miniSGBD;
+import java.util.Vector;
+
+public final class DBInfo {
+		//unique instance
+		private static DBInfo INSTANCE;
+		
+		private static Vector<RelationInfo> liste_RelationInfo;
+		private static int compteur_relations;
+		
+		//Constructeur
+		private  DBInfo(){
+			
+		}
+		
+		//accès à l'instance unique du DBManager
+		public static DBInfo getInstance() {
+			if(INSTANCE == null) {
+				INSTANCE = new DBInfo();
+			}
+			
+			return INSTANCE;
+		}
+		
+		//Initialisation
+		public void Init() {
+			liste_RelationInfo = new Vector<RelationInfo>(0);
+			compteur_relations = 0;
+		}
+		
+		//Fin de tache
+		public void Finish() {
+		
+		}
+		
+		public void AddRelation(RelationInfo ri) {
+			if(!liste_RelationInfo.contains(ri)) {
+				liste_RelationInfo.add(ri);
+				compteur_relations++;
+			}
+		}
+		
+		public void debug() {
+			RelationInfo ri = liste_RelationInfo.elementAt(0);
+		}
+}

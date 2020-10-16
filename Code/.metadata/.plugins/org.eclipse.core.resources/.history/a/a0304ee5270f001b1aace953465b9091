@@ -1,0 +1,10 @@
+package miniSGBD;
+
+public class Main {
+
+	public static void main(String[] args) {
+		DBManager.getInstance().Init();
+		
+	}
+
+}

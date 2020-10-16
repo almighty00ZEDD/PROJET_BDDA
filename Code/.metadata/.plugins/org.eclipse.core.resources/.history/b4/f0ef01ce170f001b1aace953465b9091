@@ -1,0 +1,10 @@
+package miniSGBD;
+
+public class DBManager {
+
+	private static DBManager INSTANCE;
+	
+	private  DBManager(){
+		
+	}
+}

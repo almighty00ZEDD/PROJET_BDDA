@@ -1,0 +1,20 @@
+package miniSGBD;
+
+public class DBManager {
+
+	//unique instance
+	private static DBManager INSTANCE;
+	
+	//Constructeur
+	private  DBManager(){
+		
+	}
+	
+	public DBManager getInstance() {
+		if(INSTANCE == null) {
+			INSTANCE = new DBManager();
+		}
+		
+		return INSTANCE;
+	}
+}
