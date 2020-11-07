@@ -16,7 +16,7 @@ public class RelationInfo {
 		this.type_colonnes = type_colonnes;
 	}
 	
-	//debuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuug pas canon :p
+	// Appel de la méthode dans le main , sert uniquement au test :p
 	public void debug() {
 		System.out.println("nom : " + nom_relation);
 		System.out.println("nombre de colonnes : " + nb_colonnes);

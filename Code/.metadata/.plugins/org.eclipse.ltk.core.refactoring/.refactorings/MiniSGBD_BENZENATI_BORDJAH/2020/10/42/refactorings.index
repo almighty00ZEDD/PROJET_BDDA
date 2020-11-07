@@ -1,1 +1,4 @@
 1602787353149	Delete element
+1602867255062	Encapsulate field 'compteur_relations'
+1602867430742	Encapsulate field 'PageIdx'
+1602867436648	Encapsulate field 'FileIdx'

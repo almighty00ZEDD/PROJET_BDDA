@@ -1,0 +1,25 @@
+package miniSGBD;
+
+public final class BufferManager {
+
+	private static BufferManager INSTANCE;
+	
+	private BufferManager() {
+		
+	}
+	
+	public BufferManager getInstance() {
+		if(INSTANCE == null) {
+			INSTANCE = new BufferManager();
+		}
+		return INSTANCE;
+	}
+	
+	public void Init() {
+		
+	}
+	
+	public void Finish() {
+		
+	}
+}

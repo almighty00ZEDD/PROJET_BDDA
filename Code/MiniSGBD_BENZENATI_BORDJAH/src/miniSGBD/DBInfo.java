@@ -26,7 +26,7 @@ public final class DBInfo {
 		public void Init() {
 			
 			liste_RelationInfo = new Vector<RelationInfo>(10);
-			compteur_relations = 0;
+			setCompteur_relations(0);
 		}
 		
 		//Fin de tache
@@ -37,7 +37,7 @@ public final class DBInfo {
 		public void AddRelation(RelationInfo ri) {
 			if(liste_RelationInfo.contains(ri)) return;
 				liste_RelationInfo.add(ri);
-				compteur_relations++;
+				setCompteur_relations(getCompteur_relations() + 1);
 			
 		}
 		
@@ -45,5 +45,13 @@ public final class DBInfo {
 		public void debug() {
 			RelationInfo ri = liste_RelationInfo.elementAt(0);
 			ri.debug();
+		}
+
+		public static int getCompteur_relations() {
+			return compteur_relations;
+		}
+
+		public static void setCompteur_relations(int compteur_relations) {
+			DBInfo.compteur_relations = compteur_relations;
 		}
 }
