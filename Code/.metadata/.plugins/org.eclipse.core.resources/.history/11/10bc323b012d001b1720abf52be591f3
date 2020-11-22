@@ -20,6 +20,7 @@ public class Record {
 			} else if (relInfo.getType_Colonnes().get(i).equals("float")) {
 				buff.putFloat(Float.parseFloat(values.get(i)));
 			} else if (relInfo.getType_Colonnes().get(i).substring(0,6).equals("string")) {
+				int valeur = Integer.parseInt(relInfo.getType_Colonnes().get(i).substring(6));
 				for (int j = 0; j < values.get(i).length(); j++) {
 					buff.putChar(values.get(i).charAt(j));
 				}
@@ -48,4 +49,4 @@ public class Record {
 
 		}
 	}
-
+}

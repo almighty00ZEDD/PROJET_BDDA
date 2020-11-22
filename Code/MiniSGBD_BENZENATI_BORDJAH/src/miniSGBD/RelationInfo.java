@@ -25,4 +25,12 @@ public class RelationInfo {
 			System.out.println(nom_colonnes.elementAt(i)+"\t"+ type_colonnes.elementAt(i));
 		}
 	}
+	
+	public Vector<String> getNom_Colonnes(){
+		return nom_colonnes;
+	}
+	
+	public Vector<String> getType_Colonnes(){
+		return type_colonnes;
+	}
 }

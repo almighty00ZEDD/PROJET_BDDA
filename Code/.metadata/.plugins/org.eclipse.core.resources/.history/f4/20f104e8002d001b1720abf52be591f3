@@ -1,0 +1,34 @@
+package miniSGBD;
+import java.nio.ByteBuffer;
+import java.util.ArrayList;
+
+public class Record {
+
+	public RelationInfo relInfo;
+	public ArrayList<String> values;
+	
+	public Record(RelationInfo relInfo) {
+		this.relInfo = relInfo;
+		values = new ArrayList<String>();
+	}
+	
+	public void writeToBuffer(ByteBuffer buff, int position) {
+		for(int i  = 0; i < relInfo.getNom_Colonnes().size(); i++) {
+			String type = relInfo.getType_Colonnes().get(i);
+			if(type.equals("int")) {
+				buff.putInt(Integer.parseInt(values.get(i)));
+			}
+			if(type.equals("float")) {
+				buff.putFloat(Float.parseFloat(values.get(i)));
+			}
+			if(type.split("string").length == 1) {
+				
+			}
+		}
+		
+	}
+	
+	public void readFromBuffer(ByteBuffer buff, int position) {
+	
+	}
+}
