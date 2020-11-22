@@ -1,0 +1,8 @@
+package miniSGBD;
+import java.util.ArrayList;
+
+public class Record {
+
+	public RelationInfo relInfo;
+	public ArrayList<String> values;
+}

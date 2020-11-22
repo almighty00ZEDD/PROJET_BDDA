@@ -1,0 +1,23 @@
+package miniSGBD;
+
+public class BufferManagerTests {
+
+	public static void TestsTp3() {
+		
+		BufferManager B = BufferManager.getInstance();
+		DiskManager D = DiskManager.getInstance();
+		PageId page;
+		D.Init();
+		D.CreateFile(13);
+		page1 = new PageId(0,13);
+		page2 = new PageId(1,13);
+		page3 = new PageId(0,14);
+	
+		System.out.println(page.getFileIdx()+"\t\t"+ page.getPageIdx());
+		byte [] binText = new String("MESSAGE A LIRE").getBytes();
+		D.WritePage(page, binText);
+		byte [] binTextReaded = new byte [DBParams.pageSize];
+		D.ReadPage(page, binTextReaded);
+		System.out.println(new String(binTextReaded));
+	}
+}

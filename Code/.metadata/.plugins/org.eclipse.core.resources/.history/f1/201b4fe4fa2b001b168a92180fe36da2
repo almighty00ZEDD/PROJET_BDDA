@@ -1,0 +1,13 @@
+package miniSGBD;
+
+public class Frame {
+
+	private  PageId pi;
+	private int pin_count ,dirty;
+	
+	public Frame(PageId pi) {
+		this.pi = pi;
+		this.dirty  = 0;
+		this.pin_count = 0;
+	}
+}

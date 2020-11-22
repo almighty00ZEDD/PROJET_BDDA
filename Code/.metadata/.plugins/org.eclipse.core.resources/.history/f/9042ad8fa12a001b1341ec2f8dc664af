@@ -1,0 +1,7 @@
+package miniSGBD;
+import java.util.Vector;
+
+public class Record {
+
+	public static RelationInfo relInfo;
+}

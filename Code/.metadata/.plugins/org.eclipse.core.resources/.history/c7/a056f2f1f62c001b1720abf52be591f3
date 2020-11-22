@@ -1,0 +1,27 @@
+package miniSGBD;
+
+public final class DiskManagerTests {
+
+	//Appel directement dans le main
+	public static void test_sur_TP2() {
+		DiskManager D = DiskManager.getInstance();
+		PageId page1,page2,page3;
+		D.Init();
+		D.CreateFile(13);
+		page1 = new PageId(0,13);
+		page2 = new PageId(1,13);
+		page3 = new PageId(0,14);
+		byte [] binText = new String("MESSAGE A LIRE URGENT P1").getBytes();
+		D.WritePage(page1, binText);
+		
+		binText = new String("MESSAGE A LIRE URGENT P2").getBytes();
+		D.WritePage(page1, binText);
+		
+		binText = new String("MESSAGE A LIRE URGENT P3").getBytes();
+		D.WritePage(page1, binText);
+		
+		byte [] binTextReaded = new byte [DBParams.pageSize];
+		D.ReadPage(page1, binTextReaded);
+		System.out.println(new String(binTextReaded));
+	}
+}

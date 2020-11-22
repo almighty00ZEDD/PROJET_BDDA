@@ -1,0 +1,41 @@
+package miniSGBD;
+
+public final class BufferManager {
+
+	private static BufferManager INSTANCE;
+	private static Frame [] frames; 
+	
+	private BufferManager() {
+		frames  = new  Frame [DBParams.frameCount];
+		for(int i = 0; i< DBParams.frameCount ; i++) {
+			frames[i] = new Frame();
+		}
+	}
+	
+	public static BufferManager getInstance() {
+		if(INSTANCE == null) {
+			INSTANCE = new BufferManager();
+		}
+		return INSTANCE;
+	}
+	
+	// TODO !!! vraiment à revoir !!! 
+	public byte [] GetPage(PageId pi) {
+		return null;
+	}
+	
+	void FreePage(PageId page,boolean valdirty) {
+		
+	}
+	
+	void FlushAll() {
+		
+	}
+	public void Init() {
+		
+	}
+	
+	public void Finish() {
+		
+	}
+}
