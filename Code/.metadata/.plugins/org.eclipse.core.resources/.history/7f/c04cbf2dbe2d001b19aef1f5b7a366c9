@@ -1,0 +1,8 @@
+package miniSGBD;
+
+public class DBInfoTests {
+
+	public void TestsSurTP4() {
+		
+	}
+}

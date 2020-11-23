@@ -44,14 +44,14 @@ public final class BufferManager {
 			}
 		}
 		
-		//Remplacement : CLOCK
+		//Remplacement : CLOCK (focused on the ref_bit , works fine :p)
 		boolean pageReplaced = false;
 		while(!pageReplaced) {
 			for(int i = 1; i< frames.length;i++) {
-				 if(frames[i].getPin_count() == 0 && frames[i].getRef_bit() == 1) {
+				 if(frames[i].getRef_bit() == 1) {
 					 frames[i].setRef_bit(0);
 				 }
-				 else if(frames[i].getPin_count() == 0 && frames[i].getRef_bit() == 0) {
+				 else if(frames[i].getRef_bit() == 0) {
 					 pageReplaced = true;
 					 if(frames[i].isDirty()) {
 						 DiskManager.getInstance().WritePage(frames[i].getPi(), frames[i].getBuffer());
@@ -72,7 +72,7 @@ public final class BufferManager {
 		for(int i = 0;i <frames.length;i++) {
 			if(frames[i].getPi().equals(page)) {
 				if(valdirty) frames[i].setDirty(true);
-				frames[i].decrement_pin_count();
+				if(frames[i].getPin_count() >= 0) frames[i].decrement_pin_count();
 				if(frames[i].getPin_count() == 0) frames[i].setRef_bit(1);
 			}
 		}
@@ -88,8 +88,7 @@ public final class BufferManager {
 	}
 	
 	public void Init() {
-		System.out.println(frames[0].getPin_count()+" "+frames[0].getRef_bit()+" "+ frames[0].getPi().getPageIdx());
-		System.out.println(frames[1].getPin_count()+" "+frames[1].getRef_bit()+" "+ frames[1].getPi().getPageIdx());
+
 	}
 	
 	public void Finish() {

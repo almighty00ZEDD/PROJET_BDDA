@@ -16,6 +16,13 @@ public class RelationInfo {
 		this.type_colonnes = type_colonnes;
 	}
 	
+	public RelationInfo() {
+		this.nom_relation = "NOM RELATION ";
+		this.nb_colonnes = 0;
+		this.nom_colonnes = new Vector<String>(0);
+		this.type_colonnes = new Vector<String>(0);
+		debug();
+	}
 	// Appel de la méthode dans le main , sert uniquement au test :p
 	public void debug() {
 		System.out.println("nom : " + nom_relation);

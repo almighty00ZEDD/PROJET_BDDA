@@ -1,0 +1,9 @@
+package miniSGBD;
+
+public class DBInfoTests {
+
+	public void TestsSurTP4() {
+		DBInfo DBI = DBInfo.getInstance();
+		DBI.Init();
+	}
+}

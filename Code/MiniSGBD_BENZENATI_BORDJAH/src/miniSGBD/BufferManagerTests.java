@@ -25,9 +25,18 @@ public class BufferManagerTests {
 		
 		System.out.println(new String(B.GetPage(page1)));
 		System.out.println(new String(B.GetPage(page2)));
-		B.FreePage(page1, false);
-		B.Init();
 		System.out.println(new String(B.GetPage(page3)));
+		System.out.println(new String(B.GetPage(page1)));
+		System.out.println(new String(B.GetPage(page2)));
+		System.out.println(new String(B.GetPage(page2)));
+		System.out.println(new String(B.GetPage(page3)));
+		B.FreePage(page3,true);
+		System.out.println(new String(B.GetPage(page1)));
+
+
+
+
+		
 		
 		return;
 	}
