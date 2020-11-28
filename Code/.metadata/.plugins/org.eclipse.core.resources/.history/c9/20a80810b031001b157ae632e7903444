@@ -1,0 +1,14 @@
+package miniSGBD;
+import java.nio.ByteBuffer;
+import java.util.ArrayList;
+
+public class HeaderPage {
+
+	private int NbDataPages;
+	private ArrayList<Integer> slotsLibres;
+	
+	public HeaderPage() {
+		this.NbDataPages = 0;
+		this.slotsLibres = new ArrayList<Integer>(0);
+	}
+}

@@ -4,8 +4,8 @@ import java.util.ArrayList;
 
 public class Record {
 
-	public RelationInfo relInfo;
-	public ArrayList<String> values;
+	private RelationInfo relInfo;
+	private ArrayList<String> values;
 	
 	public Record(RelationInfo relInfo) {
 		this.relInfo = relInfo;
@@ -45,7 +45,10 @@ public class Record {
 				values.add(sb.toString());
 				}
 			}
-
 		}
+	
+	public RelationInfo getRelationInfo() {
+		return relInfo;
+	}
 	}
 

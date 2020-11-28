@@ -1,0 +1,52 @@
+package miniSGBD;
+
+public class HeapFile {
+
+	private RelationInfo relInfo;
+
+	public HeapFile(RelationInfo relIfo) {
+		setRelInfo(relInfo);
+	}
+
+	//TODO
+	public void createNewOnDisk() {
+		DiskManager.getInstance().CreateFile(relInfo.getFileIdx());
+		DiskManager.getInstance().WritePage(HeaderPage(relInfo), new byte[DBParams.pageSize]);
+		byte[] contenu = BufferManager.getInstance().GetPage(HeaderPage(relInfo));
+		for (int i = 0; i < DBParams.pageSize; i++) {
+			contenu[i] = (byte) 0;
+		}
+		
+		BufferManager.getInstance().FreePage(HeaderPage(relInfo), true);
+	}
+	//TODO
+	public PageId addDataPage() {
+		PageId result = DiskManager.getInstance().AddPage(relInfo.getFileIdx());
+		byte [] buff = BufferManager.getInstance().GetPage(result);
+		HeaderPage header = new HeaderPage();
+		header.fill(buff);
+		buff = header.newPage(buff, relInfo);
+		DiskManager.getInstance().WritePage(result, buff);
+		BufferManager.getInstance().FreePage(result, true);
+		return result;
+	}
+	
+	public PageId getFreeDataPageId() {
+		byte [] buff = new byte[DBParams.pageSize];
+		buff = BufferManager.getInstance().GetPage(HeaderPage(relInfo));
+		
+	}
+
+	private PageId HeaderPage(RelationInfo relInfo) {
+		return new PageId(0, relInfo.getFileIdx());
+	}
+
+	public RelationInfo getRelInfo() {
+		return relInfo;
+	}
+
+	public void setRelInfo(RelationInfo relInfo) {
+		this.relInfo = relInfo;
+	}
+
+}
