@@ -1,0 +1,35 @@
+package miniSGBD;
+import java.io.Serializable;
+import java.util.Vector;
+
+public class Catalogue implements Serializable{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	private Vector<RelationInfo> liste;
+	private int compteur;
+	
+	public Catalogue(Vector<RelationInfo> liste, int compteur) {
+		setCompteur(compteur);
+		setListe(clone());
+	}
+
+	public Vector<RelationInfo> getListe() {
+		return liste;
+	}
+
+	public void setListe(Vector<RelationInfo> liste) {
+		this.liste = liste;
+	}
+
+	public int getCompteur() {
+		return compteur;
+	}
+
+	public void setCompteur(int compteur) {
+		this.compteur = compteur;
+	}
+}

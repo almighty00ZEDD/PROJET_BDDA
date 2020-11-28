@@ -1,0 +1,125 @@
+package miniSGBD;
+import java.util.Vector;
+import java.io.File;
+import java.io.IOException;
+import java.io.FileOutputStream;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+
+public final class DBInfo{
+
+		//unique instance
+		private static DBInfo INSTANCE;
+		private static final String path = DBParams.DBPath;
+		private static final File  f = new File(path + "/catalog.def");
+		private Vector<RelationInfo> liste_RelationInfo;
+		private int compteur_relations;
+		
+		//Constructeur
+		private  DBInfo(){
+			liste_RelationInfo = new Vector<RelationInfo>(0);
+			compteur_relations = 0;
+		}
+		
+		
+		//accès à l'instance unique du DBManager
+		public static DBInfo getInstance() {
+			if(INSTANCE == null) {
+				INSTANCE = new DBInfo();
+			}
+			
+			return INSTANCE;
+		}
+		
+		//Initialisation
+		public void init() {
+			/*
+			 * Si le repertoire ne contient pas le fichier catalog alors on fait rien
+			 */
+			if (f.exists()) {
+				System.out.println("Rien à restaurer !");
+			} else {
+				try {
+					FileInputStream fistream = new FileInputStream(f);
+					ObjectInputStream oistream = new ObjectInputStream(fistream);
+					/*
+					 * on ecrit maintenant le contenu du fichier catalog.def dans l'instance de
+					 * DBdef
+					 */
+					DBInfo dbdef = getInstance();
+					dbdef = (DBInfo) oistream.readObject();
+
+					/*
+					 * on met à jour de l'objet actuel par celui du fichier
+					 */
+					if (!dbdef.getListe().isEmpty()) {
+						setListeRelDef(dbdef.getListe());
+						setCompteur(dbdef.getCompteur());
+					}
+					oistream.close();
+				} catch (Exception e) {
+					System.out.println("Erreur survenue à");
+
+				}
+			}
+		}
+
+		public void finish() {
+			FileOutputStream fostream;
+			ObjectOutputStream oostream;
+			// on verifie l'existence des relations
+			if (this.getListe().size() > 0) {
+				try {
+					// creation du fichier dans le dossier specifié
+					fostream = new FileOutputStream(f);
+					// ecriture de l'objet dans le fichier catalog
+					oostream = new ObjectOutputStream(fostream);
+					oostream.writeObject(getInstance());
+					// maintenant on ferme le flux
+					oostream.close();
+				} catch (FileNotFoundException e) {
+
+					System.out.println("Le fichier n'a pas été trouvé " + e.getMessage());
+				} catch (IOException e) {
+
+					System.out.println("Erreur Catalog.def " + e.getMessage());
+					e.printStackTrace();
+				}
+			}
+		}
+		
+		public void AddRelation(RelationInfo ri) {
+			liste_RelationInfo.add(ri);
+			setCompteur_relations(getCompteur_relations() + 1);
+		}
+		
+		//juste pour les tests
+		public void debug() {
+			RelationInfo ri = liste_RelationInfo.elementAt(0);
+			ri.debug();
+		}
+
+		public  int getCompteur_relations() {
+			return compteur_relations;
+		}
+		
+
+		public  void setCompteur_relations(int compteur_relations) {
+			this.compteur_relations = compteur_relations;
+		}
+		
+		public void setListe(Vector<RelationInfo> l) {
+			liste_RelationInfo = l;
+		}
+		
+		public Vector<RelationInfo> getListe() {
+			return liste_RelationInfo;
+		}
+		
+		public void debug2() {
+			System.out.println(liste_RelationInfo);
+		}
+}
+

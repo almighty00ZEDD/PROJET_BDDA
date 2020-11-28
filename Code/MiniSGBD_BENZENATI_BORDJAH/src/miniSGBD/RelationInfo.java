@@ -1,8 +1,13 @@
 package miniSGBD;
+import java.io.Serializable;
 import java.util.Vector;
 
-public class RelationInfo {
+public class RelationInfo implements Serializable{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String nom_relation;
 	private int nb_colonnes;
 	private Vector<String> nom_colonnes ;

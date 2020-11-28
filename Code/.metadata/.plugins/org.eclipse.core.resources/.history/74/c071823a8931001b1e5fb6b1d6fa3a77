@@ -1,0 +1,7 @@
+package miniSGBD;
+import java.io.Serializable;
+
+public class Catalogue implements Serializable{
+
+	publi
+}
