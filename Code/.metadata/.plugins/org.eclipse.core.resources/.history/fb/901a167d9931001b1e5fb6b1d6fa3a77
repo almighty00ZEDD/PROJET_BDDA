@@ -21,12 +21,11 @@ public class RelationInfo implements Serializable{
 		this.nb_colonnes = nb_colonnes;
 		this.nom_colonnes = nom_colonnes;
 		this.type_colonnes = type_colonnes;
-		this.setFileIdx(fileIdx);
+		this.fileIdx = fileIdx;
 		this.setRecordSize(recordSize);
 		this.setSlotCount(slotCount);
 	}
 	
-	//just for the test parts :p
 	public RelationInfo() {
 		this.nom_relation = "NOM RELATION ";
 		this.nb_colonnes = 0;
@@ -66,13 +65,5 @@ public class RelationInfo implements Serializable{
 
 	public void setRecordSize(int recordSize) {
 		this.recordSize = recordSize;
-	}
-
-	public int getFileIdx() {
-		return fileIdx;
-	}
-
-	public void setFileIdx(int fileIdx) {
-		this.fileIdx = fileIdx;
 	}
 }

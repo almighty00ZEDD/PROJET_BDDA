@@ -26,7 +26,6 @@ public class RelationInfo implements Serializable{
 		this.setSlotCount(slotCount);
 	}
 	
-	//just for the test parts :p
 	public RelationInfo() {
 		this.nom_relation = "NOM RELATION ";
 		this.nb_colonnes = 0;

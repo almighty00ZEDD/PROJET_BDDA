@@ -21,12 +21,11 @@ public class RelationInfo implements Serializable{
 		this.nb_colonnes = nb_colonnes;
 		this.nom_colonnes = nom_colonnes;
 		this.type_colonnes = type_colonnes;
-		this.setFileIdx(fileIdx);
-		this.setRecordSize(recordSize);
-		this.setSlotCount(slotCount);
+		this.fileIdx = fileIdx;
+		this.recordSize = recordSize;
+		this.slotCount = slotCount;
 	}
 	
-	//just for the test parts :p
 	public RelationInfo() {
 		this.nom_relation = "NOM RELATION ";
 		this.nb_colonnes = 0;
@@ -50,29 +49,5 @@ public class RelationInfo implements Serializable{
 	
 	public Vector<String> getType_Colonnes(){
 		return type_colonnes;
-	}
-
-	public int getSlotCount() {
-		return slotCount;
-	}
-
-	public void setSlotCount(int slotCount) {
-		this.slotCount = slotCount;
-	}
-
-	public int getRecordSize() {
-		return recordSize;
-	}
-
-	public void setRecordSize(int recordSize) {
-		this.recordSize = recordSize;
-	}
-
-	public int getFileIdx() {
-		return fileIdx;
-	}
-
-	public void setFileIdx(int fileIdx) {
-		this.fileIdx = fileIdx;
 	}
 }

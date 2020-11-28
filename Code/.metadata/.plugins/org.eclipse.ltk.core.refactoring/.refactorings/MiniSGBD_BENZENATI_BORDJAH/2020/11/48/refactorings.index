@@ -3,3 +3,8 @@
 1606575121126	Encapsulate field 'liste'
 1606575125721	Encapsulate field 'compteur'
 1606579138762	Delete element
+1606582077159	Encapsulate field 'slotCount'
+1606582082045	Encapsulate field 'recordSize'
+1606582086342	Encapsulate field 'fileIdx'
+1606583573613	Encapsulate field 'slotIdx'
+1606583589464	Encapsulate field 'pageId'
