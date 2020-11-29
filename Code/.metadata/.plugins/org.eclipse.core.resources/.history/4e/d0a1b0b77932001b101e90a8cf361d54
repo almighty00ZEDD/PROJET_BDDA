@@ -49,7 +49,7 @@ public final class FileManager {
 		ArrayList<Record> liste = new ArrayList<Record>(0);
 		for(int i = 0;i < heapFiles.size();i++) {
 			if(heapFiles.get(i).getRelInfo().getNom_Relation().equals(relName)) {
-				liste = heapFiles.get(i).GetAllRecords();
+				
 			}
 		}
 		return liste;

@@ -34,10 +34,10 @@ public final class FileManager {
 		hf.createNewOnDisk();
 	}
 	
-	Rid InsertRecordInRelation(Record record, String relName) {
+	Rid InsertRecordInRelation(Record record, String relname) {
 		Rid rid = null;
 		for(int i = 0;i < heapFiles.size();i++) {
-			if(heapFiles.get(i).getRelInfo().getNom_Relation().equals(relName)) {
+			if(heapFiles.get(i).getRelInfo().getNom_Relation().equals(relname)) {
 				rid = heapFiles.get(i).InserRecord(record);
 			}
 		}
@@ -46,13 +46,7 @@ public final class FileManager {
 	
 	//listeDeRecords SelectAllFromRelation (relName)
 	public ArrayList<Record> SlectAllFromRelation(String relName){
-		ArrayList<Record> liste = new ArrayList<Record>(0);
-		for(int i = 0;i < heapFiles.size();i++) {
-			if(heapFiles.get(i).getRelInfo().getNom_Relation().equals(relName)) {
-				liste = heapFiles.get(i).GetAllRecords();
-			}
-		}
-		return liste;
+		
 	}
 	
 	public ArrayList<HeapFile> getHeapFiles() {

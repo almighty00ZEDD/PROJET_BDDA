@@ -44,9 +44,6 @@ public class RelationInfo implements Serializable{
 		}
 	}
 	
-	public String getNom_Relation() {
-		return nom_relation;
-	}
 	public Vector<String> getNom_Colonnes(){
 		return nom_colonnes;
 	}
