@@ -11,3 +11,4 @@
 1606588197062	Encapsulate field 'relInfo'
 1606591781804	Encapsulate field 'NbDataPages'
 1606591787121	Encapsulate field 'slotsLibres'
+1606648303694	Encapsulate field 'heapFiles'

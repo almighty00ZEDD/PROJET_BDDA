@@ -1,0 +1,23 @@
+package miniSGBD;
+
+public final class FileManager {
+
+	private static FileManager INSTANCE;
+	
+	private FileManager() {
+		
+	}
+	public FileManager getInstance() {
+		if(INSTANCE == null) {
+			INSTANCE = new FileManager();
+		}
+		return INSTANCE;
+	}
+	public void Init() {
+		
+	}
+	
+	public void Finish() {
+		
+	}
+}

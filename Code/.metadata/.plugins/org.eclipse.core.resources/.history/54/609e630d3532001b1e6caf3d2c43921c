@@ -58,7 +58,6 @@ public final class DBManager {
 	}
 	
 	public void CreateRelation(String nom_relation, int nb_colonnes, Vector<String> nom_colonnes, Vector<String> type_colonnes) {
-
 		int taille = 0;
 		for(int i = 0; i<type_colonnes.size();i++) {
 			switch(type_colonnes.get(i)) {
@@ -72,6 +71,5 @@ public final class DBManager {
 		int slotc = DBParams.pageSize / (taille + 1);
 		RelationInfo ri = new RelationInfo(nom_relation,nb_colonnes,nom_colonnes,type_colonnes,DBInfo.getInstance().getCompteur_relations(),taille,slotc);
 		DBInfo.getInstance().AddRelation(ri);
-		FileManager.getInstance().CreateRelationFile(ri);
 	}
 }

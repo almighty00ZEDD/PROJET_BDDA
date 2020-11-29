@@ -1,0 +1,12 @@
+package miniSGBD;
+
+public final class FileManager {
+
+	public void Init() {
+		
+	}
+	
+	public void Finish() {
+		
+	}
+}
