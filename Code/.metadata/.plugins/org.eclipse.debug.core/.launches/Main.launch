@@ -11,5 +11,6 @@
     <booleanAttribute key="org.eclipse.jdt.launching.ATTR_USE_CLASSPATH_ONLY_JAR" value="false"/>
     <stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="miniSGBD.Main"/>
     <stringAttribute key="org.eclipse.jdt.launching.MODULE_NAME" value="MiniSGBD_BENZENATI_BORDJAH"/>
+    <stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="&quot;/home/zedd/Bureau/Projet_BDDA_BENZENATI_BORDJAH/DB&quot;"/>
     <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="MiniSGBD_BENZENATI_BORDJAH"/>
 </launchConfiguration>

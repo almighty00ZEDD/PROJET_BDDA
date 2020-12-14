@@ -7,12 +7,15 @@ public class Frame {
 	private boolean dirty;
 	private byte [] buffer;
 	private int ref_bit;
+	private int pin_count_zero;
 	
 	public Frame() {
 		this.setPi(null);
 		this.setDirty(false);
 		this.setPin_count(0);
 		this.setRef_bit(0);
+		setPin_count_zero(0);
+		buffer = new byte [DBParams.pageSize];
 	}
 	
 
@@ -70,6 +73,18 @@ public class Frame {
 		this.setPi(null);
 		this.setDirty(false);
 		this.setPin_count(0);
-		this.setRef_bit(0);	}
+		this.setRef_bit(0);	
+		buffer = new byte [DBParams.pageSize];
+	}
+
+
+	public int getPin_count_zero() {
+		return pin_count_zero;
+	}
+
+
+	public void setPin_count_zero(int pin_count_zero) {
+		this.pin_count_zero = pin_count_zero;
+	}
 
 }

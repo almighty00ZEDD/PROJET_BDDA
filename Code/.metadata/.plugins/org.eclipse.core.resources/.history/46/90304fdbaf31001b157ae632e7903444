@@ -1,8 +1,0 @@
-package miniSGBD;
-import java.nio.ByteBuffer;
-
-public class HeaderPage {
-
-	private int N;
-	
-}

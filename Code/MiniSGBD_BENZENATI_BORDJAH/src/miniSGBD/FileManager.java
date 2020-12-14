@@ -1,5 +1,7 @@
 package miniSGBD;
 import java.util.ArrayList;
+import java.io.File;
+import java.io.IOException;
 
 public final class FileManager {
 
@@ -30,8 +32,8 @@ public final class FileManager {
 	
 	void CreateRelationFile(RelationInfo relInfo) {
 		HeapFile hf = new HeapFile(relInfo);
-		heapFiles.add(hf);
 		hf.createNewOnDisk();
+		heapFiles.add(hf);
 	}
 	
 	Rid InsertRecordInRelation(Record record, String relName) {
@@ -44,7 +46,6 @@ public final class FileManager {
 		return rid;
 	}
 	
-	//listeDeRecords SelectAllFromRelation (relName)
 	public ArrayList<Record> SlectAllFromRelation(String relName){
 		ArrayList<Record> liste = new ArrayList<Record>(0);
 		for(int i = 0;i < heapFiles.size();i++) {
@@ -60,5 +61,13 @@ public final class FileManager {
 	}
 	public void setHeapFiles(ArrayList<HeapFile> heapFiles) {
 		this.heapFiles = heapFiles;
+	}
+	
+	public void reset() throws IOException{
+		for(int i  = 0 ; i < heapFiles.size() ;i++) {
+			int fileIdx = heapFiles.get(i).getRelInfo().getFileIdx();
+			File f = new File(DBParams.DBPath +"/Data_"+fileIdx+".rf");
+			if(f.exists()) f.delete();
+		}
 	}
 }

@@ -2,14 +2,16 @@ package miniSGBD;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 
-public class HeaderPage {
+public class HeaderPage extends PageId {
 
 	private int NbDataPages;
 	private ArrayList<Integer> slotsLibres;
+
 	
-	public HeaderPage() {
-		this.setNbDataPages(0);
-		this.setSlotsLibres(new ArrayList<Integer>(0));
+	public HeaderPage(int fileIdx) {
+		super(0, fileIdx);
+		NbDataPages = 0;
+		this.slotsLibres = new ArrayList<>(0);
 	}
 
 	public void fill(byte[] buff) {
@@ -18,6 +20,17 @@ public class HeaderPage {
 		for(int i = 0; i < NbDataPages ;i++) {
 			slotsLibres.add(b.getInt());
 		}
+	}
+	
+	public byte[] writeHeaderPage(byte [] buff) {
+		ByteBuffer b = ByteBuffer.wrap(buff);
+		b.clear();
+		b = ByteBuffer.allocate(DBParams.pageSize);
+		b.putInt(getNbDataPages());
+		for(int i = 0; i< getNbDataPages();i++) {
+			b.putInt(slotsLibres.get(i));
+		}
+		return b.array();
 	}
 	
 	public byte [] newPage(byte [] buff,RelationInfo relInfo) {
@@ -30,9 +43,9 @@ public class HeaderPage {
 		return b.array();
 	}
 	
-	public int getAvailablePage(RelationInfo relInfo) {
+	public int getAvailablePage() {
 		for(int i = 0;i < NbDataPages;i++) {
-			if(slotsLibres.get(i) < relInfo.getSlotCount()) {
+			if(slotsLibres.get(i) > 0) {
 				return (i+1);
 			}
 		}
@@ -52,5 +65,13 @@ public class HeaderPage {
 
 	public void setSlotsLibres(ArrayList<Integer> slotsLibres) {
 		this.slotsLibres = slotsLibres;
+	}
+	
+	public void incrementerNBDataPages() {
+		this.NbDataPages++;
+	}
+	
+	public void addSlotLibre(Integer slotCount) {
+		this.slotsLibres.add(slotCount);
 	}
 }

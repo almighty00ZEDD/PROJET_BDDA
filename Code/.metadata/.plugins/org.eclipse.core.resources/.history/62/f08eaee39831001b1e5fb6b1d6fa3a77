@@ -1,4 +1,0 @@
-Don't forget:
-
-1.Buffer maager replacement policy is working but it's not quite a clock one .... fix it
-2.Remove the test parts inside the efficient code (print functions and shit)

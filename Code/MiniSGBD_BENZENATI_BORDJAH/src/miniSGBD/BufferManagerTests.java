@@ -24,20 +24,28 @@ public class BufferManagerTests {
 		
 		
 		System.out.println(new String(B.GetPage(page1)));
+		B.FreePage(page1, false);
+		
+		//chargement de deux pages en meme temps avant les free
 		System.out.println(new String(B.GetPage(page2)));
 		System.out.println(new String(B.GetPage(page3)));
+		
+		B.FreePage(page2, false);
+		B.FreePage(page3, false);
+		
 		System.out.println(new String(B.GetPage(page1)));
 		System.out.println(new String(B.GetPage(page2)));
+		
+		B.FreePage(page1, false);
+		B.FreePage(page2, false);
+		
 		System.out.println(new String(B.GetPage(page2)));
 		System.out.println(new String(B.GetPage(page3)));
-		B.FreePage(page3,true);
+		B.FreePage(page2, false);
+		B.FreePage(page3, false);
 		System.out.println(new String(B.GetPage(page1)));
+		B.FreePage(page1, false);
 
-
-
-
-		
-		
 		return;
 	}
 }

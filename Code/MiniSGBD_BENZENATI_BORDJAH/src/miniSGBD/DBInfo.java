@@ -58,7 +58,7 @@ public final class DBInfo implements Serializable{
 				e.printStackTrace();
 			}
 			
-			
+			System.out.println(compteur_relations);
 		}
 		
 		//Fin de tache
@@ -106,5 +106,10 @@ public final class DBInfo implements Serializable{
 		public void debug2() {
 			System.out.println(liste_RelationInfo);
 		}
+		
+		public void reset() throws IOException{
+			liste_RelationInfo.clear();
+			setCompteur_relations(0);
+			if(f.exists()) f.delete();
+		}
 }
-

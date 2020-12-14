@@ -50,5 +50,9 @@ public class Record {
 	public RelationInfo getRelationInfo() {
 		return relInfo;
 	}
+	
+	public void addValue(String value) {
+		values.add(value);
+	}
 	}
 
