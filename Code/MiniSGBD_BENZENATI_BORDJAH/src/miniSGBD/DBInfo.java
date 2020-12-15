@@ -15,7 +15,7 @@ public final class DBInfo implements Serializable{
 		//unique instance
 		private static DBInfo INSTANCE;
 		private static final String path = DBParams.DBPath;
-		private static final File  f = new File(path + "/catalog.def");
+		private static  File  f = new File(path + "/catalog.def");
 		private transient Vector<RelationInfo> liste_RelationInfo;
 		private int compteur_relations;
 		
@@ -57,8 +57,6 @@ public final class DBInfo implements Serializable{
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			
-			System.out.println(compteur_relations);
 		}
 		
 		//Fin de tache
@@ -110,6 +108,7 @@ public final class DBInfo implements Serializable{
 		public void reset() throws IOException{
 			liste_RelationInfo.clear();
 			setCompteur_relations(0);
-			if(f.exists()) f.delete();
+			File catalog = new File(path + "/catalog.def");
+			catalog.delete();
 		}
 }

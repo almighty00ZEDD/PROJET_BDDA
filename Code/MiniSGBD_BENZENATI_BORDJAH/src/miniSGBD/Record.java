@@ -24,7 +24,6 @@ public class Record {
 					buff.putChar(values.get(i).charAt(j));
 				}
 			}
-
 		}
 	}
 	

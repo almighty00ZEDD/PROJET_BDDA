@@ -10,26 +10,25 @@ public class Main {
 		
 		//Initialisation de DBParams
 		//U+1F9B8
+		DBParams.DBPath = args[0]; 
+		DBParams.pageSize = 4096;
+		DBManager DBM = DBManager.getInstance();
+		DBInfo DBI = DBInfo.getInstance();
+		DBI.Init();
+		DBM.Init();
 		while(true)
-		{
-			DBParams.DBPath = args[0]; 
-			DBParams.pageSize = 4096;
-			DBManager DB = DBManager.getInstance();
-
-				
-			    
-					
-				DB.Init();
-
+		{	
 
 					StringBuffer sb = new StringBuffer();
 					Scanner s = new Scanner(System.in);
 
 					sb.append(s.nextLine());
-					DB.ProcessCommand(sb.toString()); //CREATEREL ZEDD C1:int C2:float C3:string4
+					DBM.ProcessCommand(sb.toString()); //CREATEREL ZEDD C1:int C2:float C3:string4
 					//INSERT INTO nomRelation RECORD (val1,val2, ... ,valn)
+					//DBM.Finish();
 					DBInfo.getInstance().Finish();
 		}
+		
 		
 		//from here it's just for tests
 		

@@ -76,6 +76,7 @@ public class HeapFile {
 		// Ã©criture Ã  fur et a mesure des records : slot d'Ã©criture = nb max de slots
 		// - nb slots libres puis fois record size
 		int position = relInfo.getSlotCount() - (header.getSlotsLibres().get(pageId.getPageIdx()-1));
+		
 		rid.setSlotIdx(position);
 		position *= (relInfo.getRecordSize() + 1);
 		record.WriteToBuffer(buff, position);
@@ -110,7 +111,6 @@ public class HeapFile {
 		for (int i = 0; i < nbSlotsOccupes; i++) {
 			Record r = new Record(relInfo);
 			r.readFromBuffer(buff, position * i);
-			System.out.print("\n******" + r.getValues() + "*******\n");
 			liste_records.add(r);
 		}
 
@@ -127,7 +127,6 @@ public class HeapFile {
 		if (pageId == null) {
 			pageId = this.addDataPage();
 		}
-		System.out.println("\nPAGEID : file:"+ pageId.getFileIdx()+ " | page : " + pageId.getPageIdx());
 		Rid rid = this.writeRecordToDataPage(record, pageId);
 
 		return rid;
