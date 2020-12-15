@@ -9,7 +9,7 @@ public class Record {
 	
 	public Record(RelationInfo relInfo) {
 		this.relInfo = relInfo;
-		values = new ArrayList<String>(relInfo.getType_Colonnes().size());
+		values = new ArrayList<String>(0);
 	}
 	
 	public void WriteToBuffer(ByteBuffer buff, int position) {
@@ -36,7 +36,8 @@ public class Record {
 			} else if (relInfo.getType_Colonnes().get(i).equals("float")) {
 				values.add(String.valueOf(buff.getFloat()));
 			} else if (relInfo.getType_Colonnes().get(i).substring(0,6).equals("string")) {
-				int valeur = Integer.parseInt(relInfo.getType_Colonnes().get(i).substring(6));
+				
+				int valeur = Integer.parseInt(relInfo.getType_Colonnes().get(i).split("string")[1]);
 				StringBuilder sb = new StringBuilder();
 				for (int j = 0; j <valeur; j++) {
 					
@@ -54,5 +55,10 @@ public class Record {
 	public void addValue(String value) {
 		values.add(value);
 	}
+	
+	public ArrayList<String> getValues(){
+		return values;
 	}
+
+}
 

@@ -1,5 +1,6 @@
 package miniSGBD;
 import java.util.Vector;
+import java.util.ArrayList;
 import java.io.IOException;
 import java.util.StringTokenizer;
 
@@ -69,13 +70,14 @@ public final class DBManager {
 					if(DBI.getListe().get(i).getNom_Relation().equals(sb.toString())) {
 						record = new Record(DBI.getListe().get(i));
 					}
+					
 				}
 			}
-			if(st.nextToken().equals("RECORD")) {
+			if("RECORD".equals(st.nextElement())) {
 				while(st.hasMoreElements()) {
 					record.addValue(st.nextElement().toString());
 				}
-				FileManager.getInstance().InsertRecordInRelation(record, sb.toString());
+			FileManager.getInstance().InsertRecordInRelation(record, sb.toString());
 			}
 			else {
 				System.out.print("commande invalide!");
@@ -87,6 +89,23 @@ public final class DBManager {
 			break;
 			
 		case "SELECTALL" :
+			StringBuffer s = new StringBuffer();
+			if(st.nextElement().equals("FROM")) {
+				s.append(st.nextElement().toString());
+				System.out.println("Records de la relation "+ s.toString());
+				ArrayList<Record> records = new ArrayList<Record>();
+				records.addAll(FileManager.getInstance().SlectAllFromRelation(s.toString()));
+				for(int i = 0; i< records.size();i++) {
+					System.out.println("Record "+ (i+1) +": ");
+					for(int j = 0;j < records.get(i).getValues().size();j++) {
+						System.out.print(records.get(i).getValues().get(j)+" ");
+					}
+					System.out.println("");
+				}
+			}
+			else {
+				System.out.print("commande invalide!");
+			}
 			//inserer le bon code :p
 			break;
 			
@@ -94,7 +113,7 @@ public final class DBManager {
 			//inserer le bon code :p
 			break;
 			
-		default : System.out.print("commande invalide!");
+		default : 
 		}
 	}
 	

@@ -69,24 +69,24 @@ public class HeapFile {
 	public Rid writeRecordToDataPage(Record record, PageId pageId) {
 		Rid rid = new Rid(pageId, 0);
 		HeaderPage header = new HeaderPage(relInfo.getFileIdx());
-		byte[] buff = BufferManager.getInstance().GetPage(pageId);
+		ByteBuffer buff = ByteBuffer.wrap(BufferManager.getInstance().GetPage(pageId));
 		byte[] buffHeaderPage = BufferManager.getInstance().GetPage(getHeaderPage(relInfo));
 		header.fill(buffHeaderPage);
 
 		// Ã©criture Ã  fur et a mesure des records : slot d'Ã©criture = nb max de slots
 		// - nb slots libres puis fois record size
-		int position = relInfo.getSlotCount() - (header.getSlotsLibres().get(pageId.getPageIdx()-1)) + 1;
+		int position = relInfo.getSlotCount() - (header.getSlotsLibres().get(pageId.getPageIdx()-1));
 		rid.setSlotIdx(position);
 		position *= (relInfo.getRecordSize() + 1);
-		record.WriteToBuffer(ByteBuffer.wrap(buff), position);
+		record.WriteToBuffer(buff, position);
 
 		// décrémenter le nombre de slots libre de la page en question
 		Integer nbrSlotLibre = header.getSlotsLibres().get(pageId.getPageIdx()-1);
 		nbrSlotLibre -= 1;
 		header.getSlotsLibres().set(pageId.getPageIdx() -1 , nbrSlotLibre);
-
-		DiskManager.getInstance().WritePage(new PageId(0, relInfo.getFileIdx()),
-				header.writeHeaderPage(buffHeaderPage));
+		
+		DiskManager.getInstance().WritePage(new PageId(0, relInfo.getFileIdx()), header.writeHeaderPage(buffHeaderPage));
+		DiskManager.getInstance().WritePage(pageId, buff.array());
 		BufferManager.getInstance().FreePage(getHeaderPage(relInfo), true);
 		BufferManager.getInstance().FreePage(pageId, true);
 
@@ -97,20 +97,20 @@ public class HeapFile {
 	// TODO 80% sure!
 	public ArrayList<Record> getRecordsInDataPage(PageId pageId) {
 		// read data page with pageId
-		byte[] buff = BufferManager.getInstance().GetPage(pageId);
-
+		ByteBuffer buff = ByteBuffer.wrap(BufferManager.getInstance().GetPage(pageId));
 		// read header page
 		HeaderPage header = new HeaderPage(relInfo.getFileIdx());
 		byte[] buffHeaderPage = BufferManager.getInstance().GetPage(getHeaderPage(relInfo));
 		header.fill(buffHeaderPage);
 		// calculer le nombre de slots occupés
-		int nbSlotsOccupes = relInfo.getSlotCount() - (header.getSlotsLibres().get(pageId.getPageIdx()));
+		int nbSlotsOccupes = relInfo.getSlotCount() - (header.getSlotsLibres().get(pageId.getPageIdx()-1));
 
 		ArrayList<Record> liste_records = new ArrayList<Record>();
 		int position = relInfo.getRecordSize() + 1;
 		for (int i = 0; i < nbSlotsOccupes; i++) {
 			Record r = new Record(relInfo);
-			r.readFromBuffer(ByteBuffer.wrap(buff), position * i);
+			r.readFromBuffer(buff, position * i);
+			System.out.print("\n******" + r.getValues() + "*******\n");
 			liste_records.add(r);
 		}
 
@@ -127,6 +127,7 @@ public class HeapFile {
 		if (pageId == null) {
 			pageId = this.addDataPage();
 		}
+		System.out.println("\nPAGEID : file:"+ pageId.getFileIdx()+ " | page : " + pageId.getPageIdx());
 		Rid rid = this.writeRecordToDataPage(record, pageId);
 
 		return rid;
