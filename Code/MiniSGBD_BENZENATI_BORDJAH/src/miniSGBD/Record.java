@@ -12,6 +12,11 @@ public class Record {
 		values = new ArrayList<String>(0);
 	}
 	
+	/**
+	 * Ecriture d'un enregistrement dans un buffer (string to bytes)
+	 * @param buff le buffer
+	 * @param position la position de début d'écriture dans le buffer
+	 */
 	public void WriteToBuffer(ByteBuffer buff, int position) {
 		buff.position(position);
 		for (int i = 0; i < values.size(); i++) {
@@ -27,6 +32,11 @@ public class Record {
 		}
 	}
 	
+	/**
+	 * Lecture d'un enregistrement depuis un buffer (bytes to string)
+	 * @param buff le buffer
+	 * @param position position de début de lecture
+	 */
 	public void readFromBuffer(ByteBuffer buff,int position) {
 		buff.position(position);
 		for (int i = 0; i < relInfo.getType_Colonnes().size(); i++) {

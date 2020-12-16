@@ -11,7 +11,9 @@ public class HeapFile {
 			setRelInfo(relInfo);
 	}
 
-	// TODO
+	/**
+	 * Création d'un nouveau fichier pour une relation dans la disque
+	 */
 	public void createNewOnDisk() {
 		
 		DiskManager.getInstance().CreateFile(getRelInfo().getFileIdx());
@@ -26,7 +28,10 @@ public class HeapFile {
 		BufferManager.getInstance().FreePage(pi, true);
 	}
 
-	// TODO
+	/**
+	 * Ajout d'une page de données pour un fichier d'une relation
+	 * @return
+	 */
 	public PageId addDataPage() {
 		PageId pageId = DiskManager.getInstance().AddPage(relInfo.getFileIdx());
 		// get buffer of header page
@@ -44,6 +49,10 @@ public class HeapFile {
 		return pageId;
 	}
 
+	/**
+	 * Recherche d'une page de données libre
+	 * @return le PageId de la page de donnée (numero du fichier et numéro de la page dans le fichier)
+	 */
 	public PageId getFreeDataPageId() {
 		PageId pageId = null;
 		byte[] buffHeaderPage = BufferManager.getInstance().GetPage(getHeaderPage(relInfo));
@@ -65,7 +74,12 @@ public class HeapFile {
 
 	}
 
-	// TODO position a modifier et slot sur le rid (place dispo)
+	/**
+	 * Ecriture d'un enregistrement dans un fichier lié à une relation
+	 * @param record l'enregistrement
+	 * @param pageId les information de la page (numero du fichier et de la page dans le fichier)
+	 * @return
+	 */
 	public Rid writeRecordToDataPage(Record record, PageId pageId) {
 		Rid rid = new Rid(pageId, 0);
 		HeaderPage header = new HeaderPage(relInfo.getFileIdx());
@@ -73,7 +87,7 @@ public class HeapFile {
 		byte[] buffHeaderPage = BufferManager.getInstance().GetPage(getHeaderPage(relInfo));
 		header.fill(buffHeaderPage);
 
-		// Ã©criture Ã  fur et a mesure des records : slot d'Ã©criture = nb max de slots
+		// écriture à  fur et a mesure des records : slot d'écriture = nb max de slots
 		// - nb slots libres puis fois record size
 		int position = relInfo.getSlotCount() - (header.getSlotsLibres().get(pageId.getPageIdx()-1));
 		
@@ -92,10 +106,14 @@ public class HeapFile {
 		BufferManager.getInstance().FreePage(pageId, true);
 
 		return rid;
-	}//INSERT INTO ZEDD RECORD (15,8,zedd)
+	}
 
 
-	// TODO 80% sure!
+	/**
+	 * Retourner tout les enregistrement dans une page de données
+	 * @param pageId les information de la page (numero du fichier et de la page dans le fichier)
+	 * @return liste des enregistrements présents dans cette page
+	 */
 	public ArrayList<Record> getRecordsInDataPage(PageId pageId) {
 		// read data page with pageId
 		ByteBuffer buff = ByteBuffer.wrap(BufferManager.getInstance().GetPage(pageId));
@@ -121,7 +139,11 @@ public class HeapFile {
 		return liste_records;
 	}
 
-	// TODO reste Ã  savoir si la file existe!
+	/**
+	 * Insertion d'un enregistrement page de donnée libre
+	 * @param record l'enregistrement
+	 * @return identifiant pour l'enregistrement
+	 */
 	public Rid InserRecord(Record record) {
 		PageId pageId = this.getFreeDataPageId();
 		if (pageId == null) {
@@ -132,8 +154,10 @@ public class HeapFile {
 		return rid;
 	}
 
-	// listeDeRecordsGetAllRecords (), avec listeDeRecords une liste ou tableau de
-	// Record.
+	/**
+	 * Retourne tout les enregistrements depuis un fichier lié à une relation
+	 * @return liste des enregistrements
+	 */
 	public ArrayList<Record> GetAllRecords() {
 		ArrayList<Record> liste_tout_records = new ArrayList<Record>();
 
@@ -155,6 +179,11 @@ public class HeapFile {
 		return liste_tout_records;
 	}
 
+	/**
+	 * PageId pour une header page (il n'a que le numero du fichier qui varie)
+	 * @param relInfo la relation en question
+	 * @return
+	 */
 	private PageId getHeaderPage(RelationInfo relInfo) {
 		return new PageId(0, relInfo.getFileIdx());
 	}

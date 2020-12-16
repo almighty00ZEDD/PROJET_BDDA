@@ -21,12 +21,17 @@ public final class BufferManager {
 		}
 		return INSTANCE;
 	}
-
+	
+	/**
+	 * Chargement d'une page de donnée depuis le disque avec adoption de la politique de remplacement LRU
+	 * @param pi PageId qui contiens lesss numéros du fichier et de la page
+	 * @return
+	 */
 	public byte[] GetPage(PageId pi) {
 		// incrémenter temps
 		temps++;
 
-		// page dÃ©ja chargÃ©e donc prÃ©sente dans le buffer pool
+		// page déja chargée donc présente dans le buffer pool
 		for (int i = 0; i < frames.length; i++) {
 			if (frames[i].getPi() != null && frames[i].getPi().equals(pi)) {
 				frames[i].increment_pin_count();
@@ -35,7 +40,7 @@ public final class BufferManager {
 		}
 
 		// page non chargÃ©e
-		// lecture disque imposÃ©e
+		// lecture disque imposée
 		// case vide dispo :
 		for (int i = 0; i < frames.length; i++) {
 			if (frames[i].getPin_count() == 0) {
@@ -75,6 +80,11 @@ public final class BufferManager {
 
 	}
 
+	/**
+	 * marquage de la page comme fin d'utilitée
+	 * @param page PageId de la page
+	 * @param valdirty modifiée ou non
+	 */
 	void FreePage(PageId page, boolean valdirty) {
 		temps++;
 		for (int i = 0; i < frames.length; i++) {
@@ -89,6 +99,10 @@ public final class BufferManager {
 		}
 	}
 
+	
+	/**
+	 * Vidage du buffer pool
+	 */
 	void FlushAll() {
 		for (int i = 0; i < frames.length; i++) {
 			if (frames[i].isDirty()) {
@@ -105,6 +119,10 @@ public final class BufferManager {
 	public void Finish() {
 
 	}
+	
+	/**
+	 * Remise à zero du buffer manager
+	 */
 	public void reset(){
 		for(int i = 0; i< frames.length;i++) {
 			frames[i].reset();

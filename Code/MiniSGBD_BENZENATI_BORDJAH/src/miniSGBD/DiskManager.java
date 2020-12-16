@@ -27,7 +27,10 @@ public final class DiskManager {
 		
 	}
 	
-	//creation de fichier DATA
+	/**
+	 * Création d'un fichier qui contindra les enregistrements d'une relation liée à ce fichier
+	 * @param fileIdx numéro du fichier
+	 */
 	void CreateFile (int fileIdx) {
 		File newFileData = new File(DBParams.DBPath+"/Data_"+fileIdx+".rf");
 		try {
@@ -39,7 +42,11 @@ public final class DiskManager {
 		}
 	}
 	
-	//ajout d'une page dans un fichier
+	/**
+	 * Ajout d'une page dans u fichier
+	 * @param fileIdx numéro du fichier
+	 * @return retourne le numéro de la page ajoutée et le numéro du fichier(PageId)
+	 */
 	public PageId AddPage (int fileIdx) {
 		
 		int nbPages = 0;
@@ -67,7 +74,11 @@ public final class DiskManager {
 		return result;
 	}
 	
-	//lecture d'une page
+	/**
+	 * Lecture d'une page de données
+	 * @param page PageId(numeros du fichier et de la page)
+	 * @param buff le buffer
+	 */
 	void ReadPage(PageId page, byte [] buff) {
 		try {
 			RandomAccessFile raf  = new RandomAccessFile(DBParams.DBPath+"/Data_"+page.getFileIdx()+".rf","r");
@@ -80,7 +91,11 @@ public final class DiskManager {
 		}
 	}
 	
-	//ecriture dans une page
+	/**
+	 * Ecriture dans une page de données
+	 * @param page PageId(numéros du fichier et de la page)
+	 * @param buff le buffer
+	 */
 	void WritePage(PageId page, byte [] buff) {
 		try {
 			RandomAccessFile raf  = new RandomAccessFile(DBParams.DBPath+"/Data_"+page.getFileIdx()+".rf","rws");

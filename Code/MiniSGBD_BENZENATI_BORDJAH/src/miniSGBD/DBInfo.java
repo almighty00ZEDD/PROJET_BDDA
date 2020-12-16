@@ -105,6 +105,10 @@ public final class DBInfo implements Serializable{
 			System.out.println(liste_RelationInfo);
 		}
 		
+		/**
+		 * Remise à neuf de la base de donnée, suppression de toute les relations et le fichier catalog
+		 * @throws IOException
+		 */
 		public void reset() throws IOException{
 			liste_RelationInfo.clear();
 			setCompteur_relations(0);

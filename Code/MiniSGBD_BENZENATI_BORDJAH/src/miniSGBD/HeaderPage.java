@@ -14,6 +14,10 @@ public class HeaderPage extends PageId {
 		this.slotsLibres = new ArrayList<>(0);
 	}
 
+	/**
+	 * Sérialisation customisée (traduction du contenu de la header page de buffer en instance classe)
+	 * @param buff le buffer
+	 */
 	public void fill(byte[] buff) {
 		ByteBuffer b = ByteBuffer.wrap(buff);
 		setNbDataPages(b.getInt());
@@ -22,6 +26,11 @@ public class HeaderPage extends PageId {
 		}
 	}
 	
+	/**
+	 * mise à jour de la header page (avec vidage de l'ancien contenu)
+	 * @param buff le buffer à vider et remplacer
+	 * @return le buffer mis à jour
+	 */
 	public byte[] writeHeaderPage(byte [] buff) {
 		ByteBuffer b = ByteBuffer.wrap(buff);
 		b.clear();
@@ -33,6 +42,12 @@ public class HeaderPage extends PageId {
 		return b.array();
 	}
 	
+	/**
+	 * Incrémentation du nombre de pages dans la header page
+	 * @param buff le buffer lu
+	 * @param relInfo la relation concernée
+	 * @return le buffer mis à jour
+	 */
 	public byte [] newPage(byte [] buff,RelationInfo relInfo) {
 		setNbDataPages(getNbDataPages() + 1);
 		ByteBuffer b = ByteBuffer.wrap(buff);
@@ -43,6 +58,10 @@ public class HeaderPage extends PageId {
 		return b.array();
 	}
 	
+	/**
+	 *Retourne une pagee qui contiens des slots libres 
+	 * @return
+	 */
 	public int getAvailablePage() {
 		for(int i = 0;i < NbDataPages;i++) {
 			if(slotsLibres.get(i) > 0) {

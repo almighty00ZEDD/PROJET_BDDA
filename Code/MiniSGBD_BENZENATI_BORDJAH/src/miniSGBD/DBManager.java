@@ -35,9 +35,14 @@ public final class DBManager {
 	//Fin de tache
 	public void Finish() {
 		BufferManager.getInstance().FlushAll();
+		DBInfo.getInstance().Finish();
 	}
 	
-	//gestion des commandes
+	/**
+	 * Prise en compte de la commande et appel des fonctions qui les générent en dessous si commande correctemet saisie
+	 * @param command ligne de commande saisie au clavier
+	 * @throws IOException
+	 */
 	public void ProcessCommand(String command) throws IOException{
 		
 		StringTokenizer st = new StringTokenizer(command," :(),=");
@@ -72,10 +77,18 @@ public final class DBManager {
 		BufferManager.getInstance().FlushAll();
 	}
 	
+	/**
+	 * Commande de remise à neuf de la base de données
+	 * @throws IOException
+	 */
 	public void commande_RESET() throws IOException {
 		DBManager.getInstance().reset();
 	}
 	
+	/**
+	 * Commande de création d'une relation
+	 * @param st ligne délimitée par les séparateurs
+	 */
 	public void commande_CREATEREL(StringTokenizer st) {
 		StringBuffer nom_relation = new StringBuffer();
 		int nb_colonnes = 0;
@@ -90,6 +103,10 @@ public final class DBManager {
 		CreateRelation(nom_relation.toString(),nb_colonnes,nom_colonnes,type_colonnes);
 	}
 	
+	/**
+	 * Commande d'insertion simple (une ligne)
+	 * @param st ligne délimitée par les séparateurs
+	 */
 	public void commande_INSERT(StringTokenizer st) {
 		StringBuffer sb = new StringBuffer();
 		DBInfo DBI = DBInfo.getInstance();
@@ -113,6 +130,11 @@ public final class DBManager {
 		}
 	}
 	
+	/**
+	 * Commande d'insertion multiple depuis un fichier texte
+	 * @param st ligne délimitée par les séparateurs
+	 * @throws IOException
+	 */
 	public void commande_BATCHINSERT(StringTokenizer st) throws IOException {
 		String nom_relation = null, path = null;
 		if(st.nextToken().equals("INTO")) {
@@ -145,6 +167,10 @@ public final class DBManager {
 		}
 	}
 	
+	/**
+	 * Commande de séléction totale
+	 * @param st ligne de commande délimitée
+	 */
 	public void commande_SELECTALL(StringTokenizer st) {
 		StringBuffer s = new StringBuffer();
 		if(st.nextElement().equals("FROM")) {
@@ -168,6 +194,10 @@ public final class DBManager {
 		}
 	}
 	
+	/**
+	 * Commande de selection simple
+	 * @param st ligne de commande délimitée par les séparateurs
+	 */
 	public void commande_SELECTS(StringTokenizer st) {
 		StringBuffer s = new StringBuffer();
 		String parameter = null;
@@ -217,6 +247,13 @@ public final class DBManager {
 		}
 	}
 	
+	/**
+	 * Création d'une relation et calcul des paramètres ngendrés dans la base de données
+	 * @param nom_relation nom de la relation
+	 * @param nb_colonnes nombre de colonnes
+	 * @param nom_colonnes nom de chaque colonnes
+	 * @param type_colonnes type de chaque colonne
+	 */
 	public void CreateRelation(String nom_relation, int nb_colonnes, Vector<String> nom_colonnes, Vector<String> type_colonnes) {
 
 		int taille = 0;
@@ -228,7 +265,7 @@ public final class DBManager {
 			taille += (2 * Integer.parseInt(s));
 			}
 		}
-		//recordSize+1 je crois : p
+		
 		int slotc = DBParams.pageSize / (taille + 1);
 		RelationInfo ri = new RelationInfo(nom_relation,nb_colonnes,nom_colonnes,type_colonnes,DBInfo.getInstance().getCompteur_relations() + 1,taille,slotc);
 		ri.debug();
@@ -236,6 +273,10 @@ public final class DBManager {
 		DBInfo.getInstance().AddRelation(ri);
 	}
 	
+	/**
+	 * Remise à zero de toute les sauvegardes (mise à neuf de la base de données)
+	 * @throws IOException
+	 */
 	public void reset() throws IOException {
 		BufferManager.getInstance().reset();
 		DBInfo.getInstance().reset();

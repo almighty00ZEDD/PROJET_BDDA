@@ -2,12 +2,12 @@ package miniSGBD;
 
 public class Frame {
 
-	private  PageId pi;
-	private int pin_count;
-	private boolean dirty;
-	private byte [] buffer;
-	private int ref_bit;
-	private int pin_count_zero;
+	private  PageId pi; //numéros de la page et du fichier
+	private int pin_count; //traque des appels (get)  de la page
+	private boolean dirty; //flag de modification
+	private byte [] buffer; //contenu 
+	private int ref_bit; //signal de passage de pin_cunt à zero 
+	private int pin_count_zero; //flag si pin_count passe à zero
 	
 	public Frame() {
 		this.setPi(null);
@@ -69,6 +69,9 @@ public class Frame {
 		this.ref_bit = ref_bit;
 	}
 	
+	/**
+	 * Vidage du frame (remise à neuf)
+	 */
 	public void reset() {
 		this.setPi(null);
 		this.setDirty(false);

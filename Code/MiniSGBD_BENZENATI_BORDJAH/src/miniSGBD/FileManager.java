@@ -30,12 +30,22 @@ public final class FileManager {
 		
 	}
 	
+	/**
+	 * Création d'un fichier qui contiendra les records de la relation (en binaire)
+	 * @param relInfo la relation liée au fichié
+	 */
 	void CreateRelationFile(RelationInfo relInfo) {
 		HeapFile hf = new HeapFile(relInfo);
 		hf.createNewOnDisk();
 		heapFiles.add(hf);
 	}
 	
+	/**
+	 * Insertion d'un enregistrement dans une relation et sa sauvegarde dans le bon fichier 
+	 * @param record l'enregistrement (valeurs pour les colonnes)
+	 * @param relName nom de la relation concernée
+	 * @return identifiant de cet enregistrement
+	 */
 	Rid InsertRecordInRelation(Record record, String relName) {
 		Rid rid = null;
 		for(int i = 0;i < heapFiles.size();i++) {
@@ -47,6 +57,11 @@ public final class FileManager {
 		return rid;
 	}
 	
+	/**
+	 * lecture du fichier d'une relation pour y retourner tout ce qu'ils contiens comme enregistrements
+	 * @param relName nom de la relation
+	 * @return liste des enregistrements
+	 */
 	public ArrayList<Record> SlectAllFromRelation(String relName){
 		ArrayList<Record> liste = new ArrayList<Record>(0);
 		for(int i = 0;i < heapFiles.size();i++) {
@@ -65,6 +80,10 @@ public final class FileManager {
 		this.heapFiles = heapFiles;
 	}
 	
+	/**
+	 * Remise à neuf et supression de tout les fichiers et les enregistrements de la base de donnée
+	 * @throws IOException
+	 */
 	public void reset() throws IOException{
 		for(int i  = 0 ; i < heapFiles.size() ;i++) {
 			int fileIdx = heapFiles.get(i).getRelInfo().getFileIdx();
