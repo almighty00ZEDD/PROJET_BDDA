@@ -71,5 +71,6 @@ public final class FileManager {
 			File f = new File(DBParams.DBPath +"/Data_"+fileIdx+".rf");
 			if(f.exists()) f.delete();
 		}
+		heapFiles.clear();
 	}
 }

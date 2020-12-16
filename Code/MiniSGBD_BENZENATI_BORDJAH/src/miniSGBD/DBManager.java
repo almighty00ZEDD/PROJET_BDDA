@@ -3,6 +3,9 @@ import java.util.Vector;
 import java.util.ArrayList;
 import java.io.IOException;
 import java.util.StringTokenizer;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
 
 public final class DBManager {
 
@@ -52,7 +55,7 @@ public final class DBManager {
 			break;
 			
 		case "BATCHINSERT" :
-			//inserer le bon code :p
+			commande_BATCHINSERT(st);
 			break;
 			
 		case "SELECTALL" :
@@ -107,6 +110,38 @@ public final class DBManager {
 		}
 		else {
 			System.out.print("commande invalide!");
+		}
+	}
+	
+	public void commande_BATCHINSERT(StringTokenizer st) throws IOException {
+		String nom_relation = null, path = null;
+		if(st.nextToken().equals("INTO")) {
+			nom_relation = st.nextToken();
+			if(st.nextToken().equals("FROM") && st.nextToken().equals("FILE")) {
+				path = "/home/zedd/Bureau/Projet_BDDA_BENZENATI_BORDJAH/" + st.nextToken();
+				File f = new File(path);
+				FileReader fr = new FileReader(f);
+				BufferedReader br = new BufferedReader(fr);
+				int pos = 0;
+				//position de la relation (1 seul calcul :p )
+				for(int i = 0;i < DBInfo.getInstance().getListe().size();i++) {
+					if(DBInfo.getInstance().getListe().get(i).getNom_Relation().equals(nom_relation)) {
+						pos = i;
+					}
+				}
+				
+				
+				String line;
+				while( (line = br.readLine() ) != null)
+				 {
+					//découper ici avec un StringTokenizer engendre des bugs (tokens vides sans raisons) d'ou je contourne le problème
+					StringBuffer s = new StringBuffer("INSERT INTO "+ nom_relation + " RECORD("+line+")");
+					ProcessCommand(s.toString());
+				}
+			
+				fr.close();
+				br.close();
+			}
 		}
 	}
 	
