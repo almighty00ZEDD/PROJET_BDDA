@@ -45,10 +45,14 @@ public final class DBManager {
 	 */
 	public void ProcessCommand(String command) throws IOException{
 		
-		StringTokenizer st = new StringTokenizer(command," :(),=");
+		StringTokenizer st = new StringTokenizer(command," :(),");
 		switch(st.nextToken()) {
 		case "CREATEREL" : 
 			commande_CREATEREL(st);
+			break;
+		
+		case "EXIT":
+			System.exit(0);
 			break;
 			
 		case "RESET" :
@@ -65,6 +69,15 @@ public final class DBManager {
 			
 		case "SELECTALL" :
 			commande_SELECTALL(st);
+			break;
+		
+		case "SELECTC" :
+			commande_SELECTC(st);
+			//System.out.println("Ne marche pas.......");
+			break;
+		
+		case "UPDATE" :
+			commande_UPDATE(st);
 			break;
 			
 		case "SELECTS" :
@@ -85,6 +98,9 @@ public final class DBManager {
 		DBManager.getInstance().reset();
 	}
 	
+	public void commande_UPDATE(StringTokenizer st) {
+		
+	}
 	/**
 	 * Commande de création d'une relation
 	 * @param st ligne délimitée par les séparateurs
@@ -101,6 +117,7 @@ public final class DBManager {
 			nb_colonnes++;
 		}
 		CreateRelation(nom_relation.toString(),nb_colonnes,nom_colonnes,type_colonnes);
+		DBManager.getInstance().Finish();
 	}
 	
 	/**
@@ -128,6 +145,7 @@ public final class DBManager {
 		else {
 			System.out.print("commande invalide!");
 		}
+		DBManager.getInstance().Finish();
 	}
 	
 	/**
@@ -144,15 +162,6 @@ public final class DBManager {
 				File f = new File(path);
 				FileReader fr = new FileReader(f);
 				BufferedReader br = new BufferedReader(fr);
-				int pos = 0;
-				//position de la relation (1 seul calcul :p )
-				for(int i = 0;i < DBInfo.getInstance().getListe().size();i++) {
-					if(DBInfo.getInstance().getListe().get(i).getNom_Relation().equals(nom_relation)) {
-						pos = i;
-					}
-				}
-				
-				
 				String line;
 				while( (line = br.readLine() ) != null)
 				 {
@@ -163,6 +172,7 @@ public final class DBManager {
 			
 				fr.close();
 				br.close();
+				DBManager.getInstance().Finish();
 			}
 		}
 	}
@@ -212,8 +222,9 @@ public final class DBManager {
 			records.addAll(FileManager.getInstance().SlectAllFromRelation(s.toString()));
 			
 			if(st.nextElement().equals("WHERE")) {
-				colonneF = st.nextToken(); //s = nom colonne à filtrer
-				parameter = st.nextToken(); //valeur de filtrage
+				StringTokenizer st2 = new StringTokenizer(st.nextToken(),"=");
+				colonneF = st2.nextToken(); //s = nom colonne à filtrer
+				parameter = st2.nextToken(); //valeur de filtrage
 				pos = 0;
 				//recherche de la position de la colonne dans la relation
 				for(int i = 0; i < DBInfo.getInstance().getListe().size();i++) {
@@ -246,6 +257,115 @@ public final class DBManager {
 			System.out.print("commande invalide!");
 		}
 	}
+	
+	public void commande_SELECTC(StringTokenizer st) {
+		StringBuffer s = new StringBuffer();
+		if(st.nextElement().equals("FROM")) {
+			s.append(st.nextElement().toString());
+			System.out.println("Resultats : ");
+			ArrayList<Record> records = new ArrayList<Record>();
+			
+			//les records sans filtrage (SELECTALL style)
+			records.addAll(FileManager.getInstance().SlectAllFromRelation(s.toString()));
+			
+			ArrayList<String> whereAnd = new ArrayList<String>(); whereAnd.add("WHERE"); whereAnd.add("AND");
+			while(st.hasMoreTokens() && whereAnd.contains(st.nextToken().toString())) {
+				ArrayList<Record> records_filtres = new ArrayList<Record>(0);
+				records_filtres.addAll(filtrage(st,s.toString(),records)); //récupération après filtrage des record
+				records.clear(); //vider la liste des records avant le nouveau filtre
+				records.addAll(records_filtres); //ajouter les records filtrés pour un nouveau filtrage
+			}
+			
+			//affichage
+			for(int i = 0; i < records.size();i++) {
+				System.out.print("Record "+ (i+1)+" : ");
+				for(int j = 0; j < records.get(i).getValues().size();j++) {
+					System.out.print(records.get(i).getValues().get(j)+", ");
+				}
+				System.out.println("");
+			}
+		}				
+}
+	
+	private ArrayList<Record> filtrage(StringTokenizer st, String s,ArrayList<Record> recordss){
+		String parameter = null;
+		String colonneF = null;
+		ArrayList<Record> records= new ArrayList<Record>();
+		records.addAll(recordss);
+		String filter = st.nextToken();
+		String op = "";
+		if(filter.contains("=")) op ="=";
+		if(filter.contains(">")) op =">";
+		if(filter.contains("<")) op ="<";
+		if(filter.contains("<=")) op ="<=";
+		if(filter.contains(">=")) op =">=";
+
+		StringTokenizer st2 = new StringTokenizer(filter,op);
+		colonneF = st2.nextToken(); //s = nom colonne à filtrer
+		parameter = st2.nextToken(); //valeur de filtrage
+		int pos = 0;
+		//recherche de la position de la colonne dans la relation
+		for(int i = 0; i < DBInfo.getInstance().getListe().size();i++) {
+			if(DBInfo.getInstance().getListe().get(i).getNom_Relation().equals(s.toString())) {
+				for(int j = 0; j < DBInfo.getInstance().getListe().get(i).getNom_Colonnes().size();j++) {
+					if(DBInfo.getInstance().getListe().get(i).getNom_Colonnes().get(j).equals(colonneF)) {
+						pos = j;
+					}
+				}
+			}
+		}
+		
+		//SELECTC FROM S WHERE C2=100 AND C3=Nati
+		//filtrage dans records avec param
+		for(int i = 0; i< records.size();i++) {
+			
+			switch(op) {
+			 case "=" :
+				 if(!records.get(i).getValues().get(pos).equals(parameter)) {					
+					 records.remove(records.get(i));//enlever de la liste s'il ne reponds pas au criteres
+					 i--; //le filtrage ne marchais pas ....voila pourquoi
+				 }
+				 break;
+				
+			 case "<" :
+				 if(!(Double.parseDouble(records.get(i).getValues().get(pos)) < Double.parseDouble(parameter)) ) {					
+					 records.remove(i);//enlever de la liste s'il ne reponds pas au criteres
+					 i--;
+				 }
+				 break;
+			
+			 case ">" :
+				 if(!(Double.parseDouble(records.get(i).getValues().get(pos)) > Double.parseDouble(parameter)) ) {					
+					 records.remove(i);//enlever de la liste s'il ne reponds pas au criteres
+					 i--;
+				 }
+				 break;
+			 
+			 case "<=" :
+				 if(!(Double.parseDouble(records.get(i).getValues().get(pos)) <= Double.parseDouble(parameter)) ) {					
+					 records.remove(i);//enlever de la liste s'il ne reponds pas au criteres
+					 i--;
+				 }
+				 break;
+			 
+			 case ">=" :
+				 if(!(Double.parseDouble(records.get(i).getValues().get(pos)) >= Double.parseDouble(parameter)) ) {					
+					 records.remove(i);//enlever de la liste s'il ne reponds pas au criteres
+					 i--;
+				 }
+				 break;
+				 
+			 default : System.out.println("erreur !");break;
+			}
+		}
+		return records;
+	}	
+	//affichage du resultat
+
+
+		
+		
+		
 	
 	/**
 	 * Création d'une relation et calcul des paramètres ngendrés dans la base de données

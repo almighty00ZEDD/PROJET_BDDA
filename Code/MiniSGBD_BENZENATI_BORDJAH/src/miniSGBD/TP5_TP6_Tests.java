@@ -23,6 +23,7 @@ public class TP5_TP6_Tests {
 				"SELECTS FROM S WHERE C2=19",
 				"SELECTS FROM S WHERE C3=Nati"};
 	
+		
 		for(int i  =  0; i < testCommands.length;i++) {
 			System.out.println("Simulation n"+ (i+1) +" Commande: "+ testCommands[i]);
 			DBManager.getInstance().ProcessCommand(testCommands[i]);

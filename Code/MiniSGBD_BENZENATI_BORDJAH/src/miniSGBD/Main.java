@@ -5,6 +5,13 @@ import java.util.Scanner;
 public class Main {
 
 	public static void main(String[] args) throws IOException{		
+		
+		//Message de présetation
+		System.out.println("***********************************************");
+		System.out.println("MINI SYSTEME DE GESTION DE BASE DE DONNEES");
+		System.out.println("DEVELOPPE PAR : BENZENATI ZINE EDDINE | BORDJAH NADIR");
+		System.out.println("***********************************************\n\n");
+
 		//Initialisation de DBParams
 		DBParams.DBPath = args[0]; 
 		DBParams.pageSize = 4096;
@@ -18,8 +25,6 @@ public class Main {
 		DBI.Init();
 		DBM.Init();
 	
-		TP5_TP6_Tests.Test();
-		/*
 		//Début effective de la base de donnée
 		while(true)
 		{	
@@ -27,11 +32,11 @@ public class Main {
 			Scanner s = new Scanner(System.in);
 
 			sb.append(s.nextLine());
-			DBM.ProcessCommand(sb.toString()); //CREATEREL ZEDD C1:int C2:float C3:string4
+			if(sb.toString().equals("")) continue; //cas validation de saisie nul
+			
+			DBM.ProcessCommand(sb.toString()); 
 			//DBM.Finish();
 			//sauvegarde
-			DBInfo.getInstance().Finish();
 		}
-		*/
 	}
 }

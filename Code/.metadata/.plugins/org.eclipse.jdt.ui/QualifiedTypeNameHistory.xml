@@ -20,4 +20,5 @@
     <fullyQualifiedTypeName name="java.io.File"/>
     <fullyQualifiedTypeName name="java.io.BufferedInputStream"/>
     <fullyQualifiedTypeName name="java.util.StringTokenizer"/>
+    <fullyQualifiedTypeName name="java.lang.String"/>
 </qualifiedTypeNameHistroy>
