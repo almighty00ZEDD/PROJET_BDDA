@@ -2,8 +2,8 @@ package miniSGBD;
 
 public class Rid {
 
-	private PageId pageId;
-	private int slotIdx;
+	private PageId pageId; //num de fichier de et page d'insertion d'un enregistrement
+	private int slotIdx; //numéro du slot d'insertion
 	
 	public Rid(PageId pageIdx,int slotIdx) {
 		this.setPageId(pageIdx);

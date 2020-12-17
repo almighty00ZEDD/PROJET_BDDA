@@ -35,8 +35,6 @@ public class Main {
 			if(sb.toString().equals("")) continue; //cas validation de saisie nul
 			
 			DBM.ProcessCommand(sb.toString()); 
-			//DBM.Finish();
-			//sauvegarde
 		}
 	}
 }

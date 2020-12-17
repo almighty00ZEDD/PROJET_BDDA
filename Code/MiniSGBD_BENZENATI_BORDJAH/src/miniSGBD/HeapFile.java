@@ -108,7 +108,47 @@ public class HeapFile {
 		return rid;
 	}
 
+	/**
+	 * Ecris un enregistrement directement dans un slot donné
+	 * 
+	 * @param record l'enregistrment
+	 * @param pageId num du fichier et de la page
+	 * @param slotnumber numéro du slot ou écrire l'enregistrement
+	 * @return identifiant de l'enregistrement
+	 */
+	public Rid writeRecordToSlot(Record record, PageId pageId , int slotnumber) {
+		Rid rid = new Rid(pageId, 0);
+		HeaderPage header = new HeaderPage(relInfo.getFileIdx());
+		ByteBuffer buff = ByteBuffer.wrap(BufferManager.getInstance().GetPage(pageId));
+		byte[] buffHeaderPage = BufferManager.getInstance().GetPage(getHeaderPage(relInfo));
+		header.fill(buffHeaderPage);
 
+		// écriture à  fur et a mesure des records : slot d'écriture = nb max de slots - nb slots libres puis fois record size
+
+		int position = 0;
+		
+		//formule calculé par tests fait sur une feuille ... difficile à expliquer
+		if( (slotnumber % relInfo.getSlotCount()) == 0 ) position = relInfo.getSlotCount();
+		else position = (slotnumber % relInfo.getSlotCount());
+		
+		rid.setSlotIdx(position);
+		position *= (relInfo.getRecordSize() + 1);
+		record.WriteToBuffer(buff, position);
+
+		// décrémenter le nombre de slots libre de la page en question
+		Integer nbrSlotLibre = header.getSlotsLibres().get(pageId.getPageIdx()-1);
+		nbrSlotLibre -= 1;
+		header.getSlotsLibres().set(pageId.getPageIdx() -1 , nbrSlotLibre);
+		
+		DiskManager.getInstance().WritePage(new PageId(0, relInfo.getFileIdx()), header.writeHeaderPage(buffHeaderPage));
+		DiskManager.getInstance().WritePage(pageId, buff.array());
+		BufferManager.getInstance().FreePage(getHeaderPage(relInfo), true);
+		BufferManager.getInstance().FreePage(pageId, true);
+
+		return rid;
+	}
+	
+	
 	/**
 	 * Retourner tout les enregistrement dans une page de données
 	 * @param pageId les information de la page (numero du fichier et de la page dans le fichier)

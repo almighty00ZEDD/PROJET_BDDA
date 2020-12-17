@@ -99,7 +99,80 @@ public final class DBManager {
 	}
 	
 	public void commande_UPDATE(StringTokenizer st) {
-		
+		int totalUpdated = 0;
+		StringBuffer relName = new StringBuffer(st.nextToken());
+		String parameter = null, parameter2 = null;
+		String colonneF1 = null , colonneF2 = null;
+		int pos1 = 0,pos2 = 0;
+		if(st.nextToken().equals("SET")) {
+			ArrayList<Record> records = new ArrayList<Record>(0);
+			ArrayList<Integer> slot_number = new ArrayList(0);// pour garder une trace du numero de slot pour chaque record 
+			
+			
+				//les records sans filtrage (SELECTALL style)
+			records.addAll(FileManager.getInstance().SlectAllFromRelation(relName.toString()));
+			
+			for(int i = 1; i <= records.size();i++) {
+				slot_number.add(i);
+			}
+			
+			StringBuffer critere1 = new StringBuffer(st.nextToken()); //C2=v2 (nouvelle modif)
+			if(st.nextToken().equals("WHERE")) {
+				StringBuffer critere2 = new StringBuffer(st.nextToken());
+				
+				parameter2 = critere2.toString().split("=")[1]; parameter = critere1.toString().split("=")[1];
+				colonneF2 = critere2.toString().split("=")[0];colonneF1 = critere1.toString().split("=")[0];
+
+				//recherche de la position de la colonne dans la relation
+				for(int i = 0; i < DBInfo.getInstance().getListe().size();i++) {
+					if(DBInfo.getInstance().getListe().get(i).getNom_Relation().equals(relName.toString())) {
+						for(int j = 0; j < DBInfo.getInstance().getListe().get(i).getNom_Colonnes().size();j++) {
+							if(DBInfo.getInstance().getListe().get(i).getNom_Colonnes().get(j).equals(colonneF1)) pos1 = j;
+						
+							if(DBInfo.getInstance().getListe().get(i).getNom_Colonnes().get(j).equals(colonneF2)) pos2 = j;
+						}
+					}
+				}
+
+				//filtrage des records (filtrage WHERE de la commande Update)
+				for(int i  = 0; i<records.size();i++) {
+					if(!records.get(i).getValues().get(pos2).equals(parameter2)) {
+						records.remove(i);
+						slot_number.remove(i);//garde la trace du slot je rappel ;)
+						i--; //ajustement sinon on skip le prochain :p
+					}
+				}
+				
+				
+				//jusqu'ici records est trié ET nous conaissant les numéros des slots ou écrire
+				//reste a connaitre fileidx, page idx, la réponse est dans la DBInfo :)
+				int fileIdx = 0,slotCount = 0, numRelation = 0;
+				for(int i = 0; i < DBInfo.getInstance().getListe().size() ;i++) {
+					if(DBInfo.getInstance().getListe().get(i).getNom_Relation().equals(relName.toString())) {
+						numRelation = i;
+						fileIdx = DBInfo.getInstance().getListe().get(i).getFileIdx();
+						slotCount = DBInfo.getInstance().getListe().get(i).getSlotCount();
+					}
+				}
+				
+				//nous avont fileIdx et nous savons grace à slotCount sur quelle page est un records en regardant sa position! (sa position est dans slot_number ;) )
+
+				for(int i  = 0; i<records.size();i++) {
+					
+					records.get(i).getValues().set(pos1, parameter); //ajustement du slot
+					
+					int pageIdx = slot_number.get(i)/slotCount;
+						
+					if( (slot_number.get(i) % slotCount) != 0) pageIdx++;
+						
+						//écriture dans le slot
+						FileManager.getInstance().getHeapFiles().get(numRelation).writeRecordToSlot(records.get(i) ,new PageId(fileIdx,pageIdx), slot_number.get(i));
+						totalUpdated++;
+				}
+				
+				System.out.println("Total updated records : " + totalUpdated);
+			}
+		}
 	}
 	/**
 	 * Commande de création d'une relation
@@ -231,7 +304,6 @@ public final class DBManager {
 					if(DBInfo.getInstance().getListe().get(i).getNom_Relation().equals(s.toString())) {
 						for(int j = 0; j < DBInfo.getInstance().getListe().get(i).getNom_Colonnes().size();j++) {
 							if(DBInfo.getInstance().getListe().get(i).getNom_Colonnes().get(j).equals(colonneF)) pos = j;
-					
 						}
 					}
 				}

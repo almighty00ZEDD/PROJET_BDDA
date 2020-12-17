@@ -52,7 +52,6 @@ public final class FileManager {
 			if(heapFiles.get(i).getRelInfo().getNom_Relation().equals(relName)) {
 				rid = heapFiles.get(i).InserRecord(record);
 			}
-			
 		}
 		return rid;
 	}
