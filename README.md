@@ -12,7 +12,7 @@ Le repo contiens le code source d'une base de données relationnelle implément�
 - **BENZENATI ZINE EDDINE** - [Profil LinkedIn](https://www.linkedin.com/in/zine-eddine-benzenati-545388174/).
 - **BORDJAH NADIR** - [Profil LinkedIn](https://www.linkedin.com/in/nadir-bordjah-234675206/).
 
-##**Installation**
+## **Installation**
 1. **Cloner le repository** :
 
    Ouvrez votre terminal et exécutez la commande suivante :
@@ -29,7 +29,7 @@ Le repo contiens le code source d'une base de données relationnelle implément�
 - Cliquez sur Browse pour sélectionner le dossier que vous venez de cloner.
 - Sélectionnez le projet et cliquez sur Finish.
 
-## **Lancement et utilisation** :
+## **Lancement et utilisation**
 Le projet une fois ouvert dans eclipse peut etre lancé graphiquement en appuyant sur le bouton 'RUN' et utilisant la console propre à eclipse.
 
 Le projet en dehors du source (le dossier Code) contiens aussi le script `Begin.sh` permettant de lancer la base de données depuis un terminal linux ou powershell s'occupant ainsi de la compilation et du lancement.
